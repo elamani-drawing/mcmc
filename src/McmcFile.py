@@ -19,6 +19,18 @@ class McmcFile:
         self._path = None
         self._data = None
 
+    def get_path(self) -> str or None:
+        """
+            Retourne le chemin du fichier utiliser ou None s'il n'a pas ete parametrer ou s'il a deja ete utiliser
+        """
+        return self._path 
+
+    def get_data(self) -> str or None: 
+        """
+            Retourne le texte que l'utilisateur à donner ou le texte contenu dans self.__path ou None si le texte n'a pas encore ete charger
+        """
+        return self._data
+
     def set_path(self, path)->bool:
         """
         Renseigne le chemin du fichier qui doit etre utiliser durant le run 

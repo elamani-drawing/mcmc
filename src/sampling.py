@@ -30,7 +30,12 @@ class Sampling(McmcFile):
             Indique si self.run() à déjà étè executer au moin une fois
         """
         return self.__has_run
-            
+
+    def get_result(self) -> dict or None:
+        """
+            Renvoie le contenu de self.__result
+        """
+        return self.__result 
     def __take_stats(self):
         """
             Parcours le contenu de data et compte combien de fois une lettre a la position i-1 est suivis de la lettre à la position i 
