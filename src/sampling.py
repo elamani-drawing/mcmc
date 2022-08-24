@@ -1,3 +1,4 @@
+from unittest import result
 from .McmcFile import McmcFile
 from .McmcException import SamplingException 
 import json, random
@@ -34,7 +35,9 @@ class Sampling(McmcFile):
         """
             Parcours le contenu de data et compte combien de fois une lettre a la position i-1 est suivis de la lettre à la position i 
         """
-        dictionaire = self.__result
+        dictionaire = self.__result["data"]
+        dictionaire_occurence = self.__result["occurence_letter"]
+
         alphabet = self.__alphabet
         data = str(self._data)
         for i in range(len(data)):
@@ -43,6 +46,10 @@ class Sampling(McmcFile):
                     if(str(data[i]) in dictionaire[str(letter_before)]):
                         dictionaire[str(letter_before)][str(data[i])] += 1
                         dictionaire[str(letter_before)]["total"] += 1
+
+                        dictionaire_occurence[str(letter_before)] +=1
+                        dictionaire_occurence["total"] +=1
+
             letter_before = data[i]
         alphabet = None
     
@@ -58,8 +65,10 @@ class Sampling(McmcFile):
         """
         #formule = (valeur * 100 )/ total
         
-        dictionnaire_percentage = self.__result
+        dictionnaire_percentage = self.__result["data"]
+        dictionnaire_occurence_percentage = self.__result["occurence_letter"]
         dictionnaire = {} 
+        dictionnaire_occurence = {} 
         #créé un dictionnaire de pourcentage
         for cle in dictionnaire_percentage:
             dictionnaire[cle] = {}
@@ -68,11 +77,22 @@ class Sampling(McmcFile):
                 if(cle_2 != "total") :
                     dictionnaire[cle][cle_2] = (dictionnaire_percentage[cle][cle_2] * 100) / total
             dictionnaire[cle]["total"] = dictionnaire_percentage[cle]["total"]
+
+        for cle in dictionnaire_occurence_percentage:
+            if(cle != "total"):
+                total = dictionnaire_occurence_percentage["total"]
+                dictionnaire_occurence[cle] = (dictionnaire_occurence_percentage[cle] * 100)/total
+            else:
+                dictionnaire_occurence[cle] = dictionnaire_occurence_percentage["total"]
+
+        resultat = {}
+        resultat["data"] = dictionnaire
+        resultat["occurence_letter"] = dictionnaire_occurence
         #on a convertit les valeurs en pourcentage
         if(export):
-            self._create_file(name, dictionnaire)
+            self._create_file(name, resultat)
             return None
-        return dictionnaire
+        return resultat
 
     def to_json(self, data: dict =None, export:bool = False, name:str = "sampling.json") -> dict or None:
         """
@@ -111,16 +131,10 @@ class Sampling(McmcFile):
             result : bool = False
                 indique si self.__result doit etre afficher ou non
         """
-        affichage = f"path : {self._path},\n"
-        if(self._data and len(self._data) > 10):
-            affichage += f"data : '{self._data[:3]}...{self._data[len(self._data)-3:]}',\n"
-        else:
-            affichage +=  f"data : '{self._data}',\n"
-        affichage +=  f"total letters : '{self.__total__letters}',\n"
+        affichage = self.toStringMcmcFile()
         if result : 
             affichage+= f"result : {self.__result},\n"
         
-
         print(affichage)
     
     def run(self) -> bool:
@@ -132,7 +146,8 @@ class Sampling(McmcFile):
         if(self._data == None):
             self._load_file()
             
-        self.__result  = {}
+        dictionnaire_letter_count = {} #enregistre pour chaque lettre les occurences des autres lettre
+        dictionnaire_letter_occurence = {} #enregistre loccurence de chaque lettre 
         self.__alphabet = []
         #generation des dictionnaires de lettres
         for num_lettre in range(ord('a'), ord('z')+1):
@@ -141,9 +156,15 @@ class Sampling(McmcFile):
             content2 = {}
             for num_lettre2 in range(ord('a'), ord('z')+1):
                 content2[chr(num_lettre2)] = 0
+                dictionnaire_letter_occurence[chr(num_lettre2)] = 0
             
             content2["total"] = 0
-            self.__result[chr(num_lettre)] = content2
+            dictionnaire_letter_occurence["total"] = 0
+            dictionnaire_letter_count[chr(num_lettre)] = content2
+        
+        self.__result = {}
+        self.__result["data"] = dictionnaire_letter_count
+        self.__result["occurence_letter"] = dictionnaire_letter_occurence
         self.__take_stats()
         return True
 

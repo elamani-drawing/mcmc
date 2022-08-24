@@ -11,9 +11,10 @@ class McmcFile:
         Parameters
         ----------
         _path : str or None
-            le chemin vers le fichier txt
+            Le chemin vers le fichier txt
+            Le path est vidé apres avoir utiliser son contenu soit charger dans data
         _data : str or None
-            le contenu du fichier pointer par path ou une chaine de charractere python
+            Le contenu du fichier pointer par path ou une chaine de charractere python
         """
         self._path = None
         self._data = None
@@ -83,3 +84,16 @@ class McmcFile:
         """
         with open(f"{name}", 'w') as f:
             f.write(str(content))
+    
+    
+    def toStringMcmcFile(self):
+        """
+            Affiche le contenu de l'object McmcFile
+        """
+        affichage = f"path : {self._path},\n"
+        if(self._data and len(self._data) > 10):
+            affichage += f"data : '{self._data[:3]}...{self._data[len(self._data)-3:]}',\n"
+        else:
+            affichage +=  f"data : '{self._data}',\n"
+
+        return affichage
