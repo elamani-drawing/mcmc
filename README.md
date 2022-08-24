@@ -7,9 +7,9 @@
 
 ## License
 
-[//]: # Ce projet est sous ``licence MIT`` - voir le fichier [LICENSE.md](LICENSE) pour plus d'informations
+Ce projet est sous [``licence MIT``](LICENSE).
 
-## Autheur
+## Auteurs
 
 1. [Au = Or [79]](https://github.com/elamani-drawing)
 2. [glogwa68](https://github.com/glogwa68)
