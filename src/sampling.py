@@ -179,9 +179,7 @@ class Sampling(McmcFile):
         """
         largest_values = sorted(data.values(), reverse=True)[:3] 
 
-        return [key for key, value in data.items() 
-
-        if value in largest_values and value !=0 and key != "total"]
+        return [key for key, value in data.items() if value in largest_values and value !=0 and key != "total"]
 
     def make_word(self, iteration:int=5, length:int= 5, data : dict = None) -> list:
         """
@@ -206,7 +204,12 @@ class Sampling(McmcFile):
             raise SamplingException("self.make_word: iteration must be largest than 1")
 
         if(data==None):
-            data = self.__result
+            dictionnary = self.__result["data"]
+        else:
+            if("data" in data):
+                dictionnary = data["data"]         
+            else:
+                raise SamplingException("data seems corrupted")
 
         liste_word_generate = []
         
@@ -220,7 +223,7 @@ class Sampling(McmcFile):
             word+=random_char
 
             while(size_word>0):
-                five_letter_reccurent = self.__largest(data[random_char])
+                five_letter_reccurent = self.__largest(dictionnary[random_char])
                 random_char = random.choice(five_letter_reccurent)
                 word += random_char
                 size_word-=1
