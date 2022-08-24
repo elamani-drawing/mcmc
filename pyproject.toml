@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "MCMC-AU"
+version = "0.0.1"
+authors = [
+  { name="Au = OR [79]", email="faux@example.com" },
+  { name="glogwa68", email="faux@example.com" },
+]
+description = ""
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/elamani-drawing/mcmc"

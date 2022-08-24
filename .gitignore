@@ -1,4 +1,2 @@
-test.py
-*.txt
-*.json
 __pycache__
+others/*
