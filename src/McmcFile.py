@@ -1,4 +1,4 @@
-from errors import McmcFileException
+from .McmcException import McmcFileException 
 import os
 
 class McmcFile:
@@ -33,7 +33,7 @@ class McmcFile:
         if (os.path.exists(path)): 
             self._path = path
             return True
-        message = f"The resource: \"{path}\", was not found"
+        message = f"The resource \"{path}\", was not found"
         raise McmcFileException(message)
     
     def set_data(self, data)->bool:
@@ -77,7 +77,7 @@ class McmcFile:
             Parameters
             ----------
             name : str
-                Le nom ou le chemin du fichier qui doit etre crée, exemple : "mcmc.txt" or "./output/mcmc.txt"
+                Le nom qui doit etre crée, exemple : "mcmc.txt"
             content: str or dict
                 Le contenu du fichier creer
         """

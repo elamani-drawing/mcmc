@@ -1,9 +1,9 @@
-from file import McmcFile
-from errors import DecryptionException
-from sampling import Sampling
+from .McmcFile import McmcFile
+from .McmcException import DecryptionException 
+from .Sampling import Sampling 
 import os, json, random
 
-class Decryption:
+class Decryption(McmcFile):
     """
         La
     """

@@ -1,5 +1,5 @@
-from file import McmcFile
-from errors import SamplingException
+from .McmcFile import McmcFile
+from .McmcException import SamplingException 
 import json, random
 
 class Sampling(McmcFile):
@@ -208,6 +208,3 @@ class Sampling(McmcFile):
             iteration-=1
             
         return liste_word_generate
-
-if __name__ == '__main__':
-    print("pas encore disponnible")
