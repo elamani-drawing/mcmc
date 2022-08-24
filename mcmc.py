@@ -1,5 +1,3 @@
-from multiprocessing.dummy import active_children
-from ssl import ALERT_DESCRIPTION_HANDSHAKE_FAILURE
 from errors import McmcException
 import os, json, random
 
@@ -18,14 +16,11 @@ class MCMC:
             Le resultat de donnée génerer par self.run()
         __alphabet : list or None
             L'alphabet de a à Z, il est vide sauf durant l'execution de self.run()
-        __total__letters: int 
-            Le nombre de lettre qu'il y a dans data
         """
         self.__path = None
         self.__data = None
         self.__result = None
         self.__alphabet = None
-        self.__total__letters = 0 
 
     def set_path(self, path)->bool:
         """
@@ -76,7 +71,7 @@ class MCMC:
                 self.__path = None
                 return True 
         else:
-            message = f"The resource: 'self.__data' et 'self.__path' are None, must be set self.__data or self.path"
+            message = f"The resource: 'self.__data' et 'self.__path' are None, must be self.set_data() or self.set_path()"
             raise McmcException(message)
             
     def __take_stats(self):
@@ -91,7 +86,7 @@ class MCMC:
                 if(str(letter_before) in dictionaire):
                     if(str(data[i]) in dictionaire[str(letter_before)]):
                         dictionaire[str(letter_before)][str(data[i])] += 1
-                        self.__total__letters += 1
+                        dictionaire[str(letter_before)]["total"] += 1
             letter_before = data[i]
         alphabet = None
     
@@ -110,16 +105,18 @@ class MCMC:
             name: str = mcmc_pourcent.txt
                 le nom du fichier qui sera exporter
         """
-        # (valeur * 100 )/ total
-        total = self.__total__letters
+        #formule = (valeur * 100 )/ total
+        
         dictionnaire_percentage = self.__result
         dictionnaire = {} 
         #créé un dictionnaire de pourcentage
         for cle in dictionnaire_percentage:
             dictionnaire[cle] = {}
+            total = dictionnaire_percentage[cle]["total"]
             for cle_2 in dictionnaire_percentage[cle]:
-                dictionnaire[cle][cle_2] = (int(dictionnaire_percentage[cle][cle_2]) * 100) / total
-
+                if(cle_2 != "total") :
+                    dictionnaire[cle][cle_2] = (dictionnaire_percentage[cle][cle_2] * 100) / total
+            dictionnaire[cle]["total"] = dictionnaire_percentage[cle]["total"]
         #on a convertit les valeurs en pourcentage
         if(export):
             self.__create_file(name, dictionnaire)
@@ -191,6 +188,8 @@ class MCMC:
             content2 = {}
             for num_lettre2 in range(ord('a'), ord('z')+1):
                 content2[chr(num_lettre2)] = 0
+            
+            content2["total"] = 0
             self.__result[chr(num_lettre)] = content2
         self.__take_stats()
         return True
@@ -208,7 +207,7 @@ class MCMC:
 
         return [key for key, value in data.items() 
 
-        if value in largest_values]
+        if value in largest_values and value !=0 and key != "total"]
 
     def make_word(self, iteration:int=5, length:int= 5, data : dict = None):
         if(data==None):
@@ -228,9 +227,6 @@ class MCMC:
                 size_word-=1
                 
             size_word = length
-            # if word[len(word)-1:] == 's' and not 'x' in word and not 'a' in word:
-            #     liste_word_generate.append(word)
-            #     iteration-=1
             liste_word_generate.append(word)
             iteration-=1
             
