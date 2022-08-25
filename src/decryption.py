@@ -83,12 +83,12 @@ class Decryption(McmcFile):
         print(affichage)
 
     def __init_proposition(self, sampling:Sampling, sampling_crypted : Sampling) -> dict :
-        sampling_list =  {key for key, value in sampling.items()}
-        sampling_cracked_list =  {key for key, value in sampling_crypted.items()}
+        sampling_list =  [key for key, value in sampling.get_result()["occurence_letter"].items()]
+        sampling_crypted_list =  [key for key, value in sampling_crypted.get_result()["occurence_letter"].items()]
         proposition = {}
         for i in range(len(sampling_list)):
-            if ((sampling[i] != "total") and (sampling_crypted[i] != "total")):
-                proposition[sampling_list[i]] = sampling_cracked_list[i]
+            if ((sampling_list[i] != "total") and (sampling_crypted_list[i] != "total")):
+                proposition[sampling_list[i]] = sampling_crypted_list[i]
         return proposition
 
     def __plausibiliter(self, phrase:str) -> float:
@@ -100,8 +100,30 @@ class Decryption(McmcFile):
                 La phrase dont il faut calculer le niveau de plausibiliter
         """
         #formule = (1/N) * Produit(log(Pi)) avec N=  le nombre de charractere par mot et Pi= la probabilité
+        data = self.__sampling.to_percentage()["data"]
+        produit_final = []
+        alphabet = [key for key, value in self.__sampling.get_result()["occurence_letter"].items()]
+        for mot in phrase.split(" "):
+            # print("--------------------------", mot)
+            produit_current = []
+            for i in range(len(mot)):
+                if (i>0):
+                    current_letter = mot[i] 
+                    if (before_letter in alphabet and current_letter in alphabet):
+                        # print("value", data[before_letter][current_letter])
+                        # print("produit", produit_current * math.log(data[before_letter][current_letter]*1000) )
+                        produit_current.append(data[before_letter][current_letter])
+                before_letter = mot[i]
+                
+            # print(produit_current)
+            produit_current = sum(produit_current)
+            produit_current = produit_current * (1/len(mot))
+            # print(produit_current)
+            produit_final.append(produit_current)
         
-        return -1.5
+        alphabet = None
+        # return sum(produit_final)
+        return sum(produit_final) * (1/len(phrase))
 
 
     def run(self):
@@ -111,7 +133,7 @@ class Decryption(McmcFile):
         """
             {
                 "initiale ": {
-                    proposition  : 
+                    proposition  : {a : e , b : c ..}
                     traduction  :
                     plausibilite:
                 }, 
@@ -143,7 +165,13 @@ class Decryption(McmcFile):
         sampling_data_crypted.run()
         sampling_data_crypted.sorted()
         
-        print(sampling_data_crypted.get_result()["occurence_letter"])
-        print(self.__sampling.get_result()["occurence_letter"])
-        print(self.__init_proposition(self.__sampling, sampling_crypted=sampling_data_crypted))
-    
+        # print(sampling_data_crypted.get_result()["occurence_letter"])
+        # print(self.__sampling.get_result()["occurence_letter"])
+        # print(self.__init_proposition(self.__sampling, sampling_crypted=sampling_data_crypted))
+        print(self.__plausibiliter(phrase="aujourd'hui je suis allez me promener aux bord de la riviere, j'y est croiser mon frere qui y pechait des poissons-chat."))
+        print(self.__plausibiliter(phrase="sfdjk refd rfdzfsd qeqqsqdfsedz jlmfdv dfuhijodsf sdbuh i dsq vsqy caca qbdhds bds deshjk dsujkd zdesijref rsodsh gybhdsub dvsbhsdb dsbchisd dshbcxxx"))
+        
+        print(self.__plausibiliter(phrase="marine"))
+        print(self.__plausibiliter(phrase="zemour"))
+        
+        
