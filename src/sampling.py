@@ -36,6 +36,7 @@ class Sampling(McmcFile):
             Renvoie le contenu de self.__result
         """
         return self.__result 
+        
     def __take_stats(self):
         """
             Parcours le contenu de data et compte combien de fois une lettre a la position i-1 est suivis de la lettre à la position i 
@@ -62,6 +63,7 @@ class Sampling(McmcFile):
     def to_percentage(self, export:bool = False, name:str = "mcmc_pourcent.txt")-> dict or None:
         """
             Convertit self.__result en pourcentage 
+            Parameters
             ----------
             export: bool = False
                 indique si les données doivent etre retourner ou exporter sous forme de fichier txt
@@ -102,6 +104,7 @@ class Sampling(McmcFile):
     def to_json(self, data: dict =None, export:bool = False, name:str = "sampling.json") -> dict or None:
         """
             Convertit self.__result en json 
+            Parameters
             ----------
             data : dict or None = None
                 est un dictionnaire de donner comme self.__result comme self.to_percentage(...)
@@ -121,6 +124,7 @@ class Sampling(McmcFile):
     def to_txt(self, name:str = "mcmc_txt.txt") -> None:
         """
             Exporte self.__result en fichier.txt 
+            Parameters
             ----------
             name: str = mcmc_txt.txt
                 le nom du fichier qui sera exporter
@@ -146,11 +150,11 @@ class Sampling(McmcFile):
         """
             Lance la simulation
         """
-        self.__has_run= True
 
         if(self._data == None):
             self._load_file()
             
+        self.__has_run= True
         dictionnaire_letter_count = {} #enregistre pour chaque lettre les occurences des autres lettre
         dictionnaire_letter_occurence = {} #enregistre loccurence de chaque lettre 
         self.__alphabet = []

@@ -78,7 +78,35 @@ class Decryption(McmcFile):
         
         print(affichage)
 
+
+    def __plausibiliter(self, phrase:str) -> float:
+        """
+            Calcul le niveau de plausibiliter d'une phrase
+            Parameters
+            ----------
+            phrase : str
+                La phrase dont il faut calculer le niveau de plausibiliter
+        """
+        #formule = (1/N) * Produit(log(Pi)) avec N=  le nombre de charractere par mot et Pi= la probabilité
+        
+        return -1.5
+
     def run(self):
+        """
+            {
+                "initiale ": {
+                    proposition  : 
+                    traduction  :
+                    plausibilite:
+                }, 
+                "before" : {
+                    ...
+                }, 
+                "current" : {
+                    ...
+                }
+            }
+        """
         return None
 
-    #formule = (1/N) * Produit(log(Pi)) avec N=  le nombre de charractere par mot et Pi= la probabilité
+    
