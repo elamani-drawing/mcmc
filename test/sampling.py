@@ -1,4 +1,5 @@
-import  sys
+from operator import truediv
+import  sys, os, shutil
 sys.path.append(".")
 from src.Sampling import Sampling
 from src.McmcException import McmcFileException
@@ -54,6 +55,52 @@ class SamplingTest(unittest.TestCase):
         self.assertTrue(sampling.has_run())
 
         sampling = None
+
+    def test_to_percentage(self):
+        sampling = make_sampling()
+        sampling.set_path("test/words/francais_30000.txt")
+        sampling.run()
+        data_percentage = sampling.to_percentage()
+        #verification data
+        for letter in data_percentage["data"]:
+            for letter_two in data_percentage["data"][letter]:
+                if(letter_two !="total"):
+                    if((0>data_percentage["data"][letter][letter_two]) or (data_percentage["data"][letter][letter_two]>100)):
+                        print(data_percentage["data"][letter], data_percentage["data"][letter][letter_two])
+                        self.assertTrue(False)
+        #verification occurence_letter
+        for letter in data_percentage["occurence_letter"]:
+            if(letter_two !="total"):
+                if((0>data_percentage["occurence_letter"][letter]) or (data_percentage["occurence_letter"][letter]>100)):
+                    print(data_percentage["occurence_letter"][letter])
+                    self.assertTrue(False)
+
+    def test_generate_file(self):
+        
+        return #le test est desactiver 
+        sampling = make_sampling()
+        sampling.set_path("test/words/francais_30000.txt")
+        sampling.run()
+        output_directory_path ="test/output/"
+        #clear output directory
+        try:
+            shutil.rmtree(output_directory_path)
+        except:
+            pass
+        #make directory
+        os.makedirs(output_directory_path)
+        #make file
+        samping_files = ["sampling_tojson.json","sampling_percentage_tojson.json","sampling_to_txt.txt","sampling_export_to_percentage.txt"]
+        data_percentage = sampling.to_percentage()
+        sampling.to_json(export=True, name=output_directory_path+samping_files[0])
+        sampling.to_json(data=data_percentage,export=True, name=output_directory_path+samping_files[1])
+        sampling.to_txt(output_directory_path+samping_files[2])
+        sampling.to_percentage(export=True,name=output_directory_path+samping_files[3])
+
+        #verification file
+        output_directory = os.listdir(output_directory_path)
+        for file in samping_files:
+            self.assertIn(file, output_directory)
 
 
 def get_content():
