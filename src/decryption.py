@@ -39,6 +39,10 @@ class Decryption(McmcFile):
         """
         if(sampling.has_run()==False):
             sampling.run()
+            sampling.sorted()
+        else: 
+            message = f"The resource: 'sampling' must be run with sampling.run()"
+            raise DecryptionException(message)
         self.__sampling = sampling
         return True
 
@@ -78,6 +82,14 @@ class Decryption(McmcFile):
         
         print(affichage)
 
+    def __init_proposition(self, sampling:Sampling, sampling_crypted : Sampling) -> dict :
+        sampling_list =  {key for key, value in sampling.items()}
+        sampling_cracked_list =  {key for key, value in sampling_crypted.items()}
+        proposition = {}
+        for i in range(len(sampling_list)):
+            if ((sampling[i] != "total") and (sampling_crypted[i] != "total")):
+                proposition[sampling_list[i]] = sampling_cracked_list[i]
+        return proposition
 
     def __plausibiliter(self, phrase:str) -> float:
         """
@@ -91,7 +103,11 @@ class Decryption(McmcFile):
         
         return -1.5
 
+
     def run(self):
+        """
+            Lance le processus de déchiffrement
+        """
         """
             {
                 "initiale ": {
@@ -107,6 +123,27 @@ class Decryption(McmcFile):
                 }
             }
         """
-        return None
-
+        resultat = {
+            "initiale" : {},
+            "before" : {},
+            "current" : {}
+        }
+        if(self.__sampling == None):
+            message = f"The resource: 'self.__sampling' must be renseigned"
+            raise DecryptionException(message)
+            
+        sampling_data_crypted = Sampling()
+        if(self.get_data() == None):
+            if(self.get_path()==None):
+                message = f"The resource: 'self._data' et 'self._path' are None, must be use self.set_data() or self.set_path()"
+                raise DecryptionException(message)
+            sampling_data_crypted.set_path(self.get_path())
+        else:
+            sampling_data_crypted.set_data(self.get_data())
+        sampling_data_crypted.run()
+        sampling_data_crypted.sorted()
+        
+        print(sampling_data_crypted.get_result()["occurence_letter"])
+        print(self.__sampling.get_result()["occurence_letter"])
+        print(self.__init_proposition(self.__sampling, sampling_crypted=sampling_data_crypted))
     

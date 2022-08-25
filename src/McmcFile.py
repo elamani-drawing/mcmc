@@ -31,7 +31,7 @@ class McmcFile:
         """
         return self._data
 
-    def set_path(self, path)->bool:
+    def set_path(self, path:str)->bool:
         """
         Renseigne le chemin du fichier qui doit etre utiliser durant le run 
         ATTENTION: Apres un run, self._path est remis à None

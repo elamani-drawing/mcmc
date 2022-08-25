@@ -141,8 +141,9 @@ class Sampling(McmcFile):
                 indique si self.__result doit etre afficher ou non
         """
         affichage = self.toStringMcmcFile()
+        affichage+= f"has_run: {self.__has_run},\n"
         if result : 
-            affichage+= f"result : {self.__result},\n"
+            affichage+= f"result: {self.__result},\n"
         
         print(affichage)
     
@@ -175,6 +176,38 @@ class Sampling(McmcFile):
         self.__result["data"] = dictionnaire_letter_count
         self.__result["occurence_letter"] = dictionnaire_letter_occurence
         self.__take_stats()
+        return True
+
+
+    def __sorted_alphabet_by_value(self,dictionnaire:dict) -> dict:
+        """
+            Range dictionnaire["occurence_letter"] par apport au valeur
+            Parameters
+            ----------
+            dictionnaire : dict 
+                Attend une valeur de type self.__result non None
+        """
+        dictionnaire_sorte = {}
+        while len(dictionnaire) >0:
+            plus_grand_key = -1
+            plus_grand_value = -1
+            for element in dictionnaire:
+                if (dictionnaire[element] > plus_grand_value):
+                    plus_grand_key = element
+                    plus_grand_value = dictionnaire[element]
+
+            dictionnaire_sorte[plus_grand_key] = dictionnaire.pop(plus_grand_key)
+
+        dictionnaire = dictionnaire_sorte
+        return dictionnaire
+
+    def sorted(self) -> bool:
+        """
+            Range le contenu de self.__result["occurence_letter"]
+        """
+        if self.__result == None:
+            raise SamplingException("Result seems corrupted")
+        self.__result["occurence_letter"] = self.__sorted_alphabet_by_value(self.get_result()["occurence_letter"])
         return True
 
     def __largest(self, data : dict): 
