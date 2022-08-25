@@ -190,7 +190,7 @@ class Sampling(McmcFile):
 
         return [key for key, value in data.items() if value in largest_values and value !=0 and key != "total"]
 
-    def make_word(self, iteration:int=5, length:int= 5, data : dict = None) -> list:
+    def make_word(self, iteration:int=5, data : dict = None, length : int =-1) -> list:
         """
             Génére des mots ayant une prononciation dans la meme longue que les données dans self.__data/self.__path
             
@@ -198,7 +198,7 @@ class Sampling(McmcFile):
             ----------
             iteration : int = 5
                 Le nombre de mot qui doivent être génerer, si (iteration < 1) SamplingException
-            length : int = 5
+            length : int = -1
                 La taille des mots génerer, si (length <=0) les mots generer auront une taille aleatoire entre 3 et 7 
             data: dict = None
                 Si vous souhaitez utiliser d'autre donnée pour génerer les mots, sinon le programme utilisera self.
@@ -231,7 +231,7 @@ class Sampling(McmcFile):
             random_char = chr(random.randint(97, 122)) # 97 = a, 122 = z
             word+=random_char
 
-            while(size_word>0):
+            while(size_word>1):
                 five_letter_reccurent = self.__largest(dictionnary[random_char])
                 random_char = random.choice(five_letter_reccurent)
                 word += random_char

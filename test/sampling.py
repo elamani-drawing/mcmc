@@ -2,7 +2,7 @@ from operator import truediv
 import  sys, os, shutil
 sys.path.append(".")
 from src.Sampling import Sampling
-from src.McmcException import McmcFileException
+from src.McmcException import McmcFileException, SamplingException
 import unittest
 
 class SamplingTest(unittest.TestCase):
@@ -74,6 +74,19 @@ class SamplingTest(unittest.TestCase):
                 if((0>data_percentage["occurence_letter"][letter]) or (data_percentage["occurence_letter"][letter]>100)):
                     print(data_percentage["occurence_letter"][letter])
                     self.assertTrue(False)
+
+    def test_make_words(self):
+        sampling = make_sampling()
+        sampling.set_path("test/words/francais_30000.txt")
+        self.assertRaises(SamplingException, sampling.make_word) 
+        sampling.run()
+        words = sampling.make_word()
+        self.assertEqual(len(words), 5)
+        default_value = 8
+        words = sampling.make_word(iteration = default_value, length=default_value)
+        self.assertEqual(len(words), default_value)
+        for word in words:
+            self.assertEqual(len(word), default_value)
 
     def test_generate_file(self):
         
