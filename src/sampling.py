@@ -203,7 +203,7 @@ class Sampling(McmcFile):
 
     def sorted(self) -> bool:
         """
-            Range le contenu de self.__result["occurence_letter"]
+            Range le contenu de self.__result["occurence_letter"] dans l'ordre décroissante des valeurs
         """
         if self.__result == None:
             raise SamplingException("Result seems corrupted")
