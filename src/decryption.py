@@ -95,7 +95,7 @@ class Decryption(McmcFile):
         """
         return self.__accept_degradation
 
-    def get_resultat(self) -> dict or None:
+    def get_result(self) -> dict or None:
         """
             Retourne le resultat du dechiffrage ou None si la fonction run n'a pas encore etait appellée.
         """
@@ -112,7 +112,7 @@ class Decryption(McmcFile):
         affichage = self.toStringMcmcFile() 
         affichage+= f"sampling: {self.get_sampling()},\n"
         if(result):
-            affichage+= f"result: {self.get_resultat()},\n"
+            affichage+= f"result: {self.get_result()},\n"
         affichage+= f"max_iteration: {self.get_max_iteration()},\n"
         affichage+= f"limite de degradation acceptable: {self.get_accept_degradation()},\n"
 
@@ -272,21 +272,8 @@ class Decryption(McmcFile):
         """
             Lance le processus de déchiffrement
         """
-        """
-            {
-                "initiale ": {
-                    proposition  : {a : e , b : c ..}
-                    traduction  :
-                    plausibilite:
-                }, 
-                "before" : {
-                    ...
-                }, 
-                "current" : {
-                    ...
-                }
-            }
-        """
+        print("cette fonctionnalité n'est pas encore disponnible :(")
+        return 
         if(self.__sampling == None):
             message = f"The resource: 'self.__sampling' must be renseigned"
             raise DecryptionException(message)

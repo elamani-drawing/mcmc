@@ -26,7 +26,7 @@ sampling.set_path("./words/francais_30000.txt") #ici nous lui donnons le lien ve
 ```
 ### Afficher votre sampling
 ```py
-#affichage des attributs de Sampling 
+#affichage les attributs de Sampling 
 sampling.display() #vous permet d'afficher son contenu, que ca soit le path, data, resultat etc. ca peut etre pratique pour débugger
 sampling.display(True) #indique que vous voulez également afficher le resultat, pouvant etre assez consequent nous avons décider de le mettre en option
 ```
@@ -66,4 +66,4 @@ sampling.sorted() #Range les valeurs de 'occurence_letter' dans l'ordre décrois
 ```
 
 ## Methodes
-Je vous laisse le soin d'utiliser votre éditeur pour avoir plus de détails sur la signature, les arguments de chacunes des methodes etc.
+Je vous laisse le soin d'utiliser votre éditeur pour avoir plus de détails sur la signature, les arguments de chacunes des methodes de Sampling etc.
