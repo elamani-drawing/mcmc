@@ -1,7 +1,6 @@
 ### Sampling 
 
 ## Description 
-
 Sampling prend une chaine de caractère en entrée (ou un fichier.txt) et recueille des renseignements dessu. 
 Le résultat sera un dictionnaire python ayant comme clé : 
 1. 'occurrence_letter': l'occurrence de x dans les données en entrée, avec `x compris dans [a, z]`. 
@@ -28,22 +27,17 @@ sampling.display() #vous permet d'afficher son contenu, que ca soit le path, dat
 sampling.display(True) #indique que vous voulez également afficher le resultat, pouvant etre assez consequent nous avons décider de le mettre en option
 ```
 ## Lancer le processus pour recueillir les données
+ATTENTION apres sampling.run() le programme verifie si un chemin est renseigner (à l'aide de set_path), si c'est le cas, le programme charge le contenu du fichier dans self.__data, et l'attribut self.__path est remis à None.
 ```py
 sampling.run()  
-"""
-ATTENTION apres sampling.run() le programme verifie si un chemin est renseigner (à l'aide de set_path), si c'est le cas, le programme charge le contenu du fichier dans self.__data, et l'attribut self.__path est remis à None.
-"""
 ```
 Apres le run, vous pouvez soit generer des mots soit exporter les données.
 ## Generer des mots
 ```py
-#generer des mots
 print(sampling.make_word()) #les mots générés sont renvoyés dans une liste
-
 ```
 ## Exporter les données
 ```py
-#exporter les données
 #en json
 sampling.to_json() #convertit les données en json et les renvoies 
 sampling.to_json(export=True, name="sampling.json") #convertit les données en json et les exportes dans un fichier json
@@ -55,7 +49,6 @@ sampling.to_txt(export=True, name="sampling.txt") #convertit les données en jso
 ```
 ## Convertir les valeurs données en pourcentage
 ```py
-#Convertion des valeurs
 print(sampling.to_percentage()) #Copie le dictionnaire de résultat en convertsissant les valeurs en pourcentage et retourne le nouveau dictionnaire
 sampling.to_percentage(export=True, name="sampling_percentage.txt") #Copie le dictionnaire de résultat en convertsissant les valeurs en pourcentage et les exportes dans un fichier .txt
 sampling.to_json(data = sampling.to_percentage()) #les valeur en pourcentage et retourne les données sous la forme de json
@@ -64,7 +57,6 @@ sampling.to_json(data = sampling.to_percentage(),export=True, name="sampling_per
 
 ## Ranger les données du plus grand au plus petit
 ```py
-#Convertion des valeurs
 sampling.sorted() #Range les valeurs de 'occurence_letter' dans l'ordre décroissant par apport au valeur
 ```
 
