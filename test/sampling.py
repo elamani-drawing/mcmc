@@ -18,7 +18,7 @@ class SamplingTest(unittest.TestCase):
         data = sampling.get_result()["data"]
         #verification des valeurs apres un premier run
         self.assertEqual(data["a"]["i"], 3) 
-        self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 159) 
+        self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 160) 
         self.assertTrue(sampling.has_run())
 
         sampling.run()
@@ -26,7 +26,7 @@ class SamplingTest(unittest.TestCase):
         data = sampling.get_result()["data"]
         #verification des valeurs apres un deuxieme run
         self.assertEqual(data["a"]["i"], 3) 
-        self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 159) 
+        self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 160) 
         self.assertTrue(sampling.has_run())
 
         self.assertRaises(McmcFileException, sampling.set_path, "./test/not exist.txt") 
@@ -49,9 +49,9 @@ class SamplingTest(unittest.TestCase):
         data = sampling.get_result()["data"]
 
         #verification des valeurs apres un premier run
-        self.assertEqual(data["a"]["i"], 1601) 
-        self.assertEqual(data["b"]["a"], 472) 
-        self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 157410) 
+        self.assertEqual(data["a"]["i"], 1604) 
+        self.assertEqual(data["b"]["a"], 507) 
+        self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 158910) 
         self.assertTrue(sampling.has_run())
 
         sampling = None
@@ -92,7 +92,7 @@ class SamplingTest(unittest.TestCase):
         
         return #le test est desactiver 
         sampling = make_sampling()
-        sampling.set_path("test/words/francais_30000.txt")
+        sampling.set_path("test/words/swann.txt")
         sampling.run()
         output_directory_path ="test/output/"
         #clear output directory

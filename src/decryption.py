@@ -1,3 +1,4 @@
+from hmac import new
 from .McmcFile import McmcFile
 from .McmcException import DecryptionException 
 from .Sampling import Sampling 
@@ -28,8 +29,7 @@ class Decryption(McmcFile):
         self.__accept_degradation = 0
         self.__result = None 
         # self.__plausible = None
-        self.__max_iteration = 10000
-
+        self.__max_iteration = 100000
     def set_sampling(self, sampling : Sampling) -> bool: 
         """
             Parametre self.__sampling
@@ -67,12 +67,12 @@ class Decryption(McmcFile):
             Parametre la limiteacceptable en cas de degradation de la plausibilite, utile pour l'algorithme de metropolice
             Parameters
             ----------
-            degradation: int = 2
+            iteration: int
                 La valeur de degradation
         """
         print("deg", iteration)
-        if(iteration<=999):
-            message = f"iteration must be bigger than 999."
+        if(iteration<=9999):
+            message = f"iteration must be bigger than 9999."
             raise DecryptionException(message)
         self.__max_iteration = iteration
         return True
@@ -128,13 +128,13 @@ class Decryption(McmcFile):
         sampling_list =  [key for key, value in sampling.get_result()["occurence_letter"].items()]
         sampling_crypted_list =  [key for key, value in sampling_crypted.get_result()["occurence_letter"].items()]
         proposition = {}
-        for i in range(len(sampling_list)):
+        for i in range(len(sampling_crypted_list)):
             if ((sampling_list[i] != "total") and (sampling_crypted_list[i] != "total")):
                 if(i <len(sampling_crypted_list)):
-                    proposition[sampling_list[i]] = sampling_crypted_list[i]
+                    proposition[sampling_crypted_list[i]] = sampling_list[i]
                 else:
-                    proposition[sampling_list[i]] = "" #si il y a des lettres presentes dans sampling_list mais pas dans sampling_crypted_list
-
+                    proposition[sampling_crypted_list[i]] = "" #si il y a des lettres presentes dans sampling_crypted_list mais pas dans  sampling_list
+        
         return proposition, sampling_list
 
     def __get_next_proposition(self, proposition : dict, liste: list)-> dict:
@@ -155,6 +155,7 @@ class Decryption(McmcFile):
         letter_2_value = proposition.pop(letter_2)
         proposition[letter] = letter_2_value
         proposition[letter_2] = letter_value
+        print("--",letter, letter_2_value, letter_2, letter_value)
         return proposition
 
     def __plausibiliter(self, phrase:str) -> float:
@@ -206,7 +207,9 @@ class Decryption(McmcFile):
         new_phrase=""
         for letter in phrase:
             if(letter in letters):
-                new_phrase += letter
+                new_phrase += proposition[letter]
+            else:
+                new_phrase+=letter
         return new_phrase
 
     def __search(self,sampling_crypted: Sampling):
@@ -241,19 +244,21 @@ class Decryption(McmcFile):
             traduction = self.__re_write(traduction, proposition, list_letter)
             plausibilite = self.__plausibiliter(traduction)
             #la plausibilite est acceptable 
-            if(plausibilite+ self.get_accept_degradation() <1.6):
+            if((plausibilite+ self.get_accept_degradation()) >=result["last"]["plausibilite"]):
+                print("----------------------------garde", plausibilite + self.get_accept_degradation(), result["last"]["plausibilite"] )
                 #on met à jour la derniere proposition 
                 result["last"]["proposition"] = proposition
                 result["last"]["traduction"] = traduction 
                 result["last"]["plausibilite"] = plausibilite 
 
-                #on verifie si la plausibilite est mieu que la meilleur qu'on est eu 
+                #on verifie si la plausibilite est plus grande que la meilleur qu'on est eu 
                 if(plausibilite> result["max_plausible"]["plausibilite"]):  
                     result["max_plausible"]["proposition"] = proposition
                     result["max_plausible"]["traduction"] = traduction 
                     result["max_plausible"]["plausibilite"] = plausibilite 
             #la plausibilite est inutilisable > 1.6
             else:
+                print("---garde pas", plausibilite, "--", result["last"]["plausibilite"], traduction)
                 #on revient on arriere et on essaye une autre proposition 
                 proposition = result["last"]["proposition"]
                 traduction = result["last"]["traduction"]
@@ -295,10 +300,13 @@ class Decryption(McmcFile):
         else:
             sampling_data_crypted.set_data(self.get_data())
         sampling_data_crypted.run()
-        # sampling_data_crypted.display()
+        # sampling_data_crypted.display(True)
+        # print(sampling_data_crypted.get_data())
         sampling_data_crypted.sorted()
         print(self.__search(sampling_data_crypted))
         
+        #verifier le chargement des datas, les majuscules doivent etre des minuscule, garder les espaces etc.
+
         # print(self.__plausibiliter(phrase="aujourd'hui je suis allez me promener aux bord de la riviere, j'y est croiser mon frere qui y pechait des poissons-chat."))
         # print(self.__plausibiliter(phrase="sfdjk refd rfdzfsd qeqqsqdfsedz jlmfdv dfuhijodsf sdbuh i dsq vsqy caca qbdhds bds deshjk dsujkd zdesijref rsodsh gybhdsub dvsbhsdb dsbchisd dshbcxxx"))
         
@@ -312,3 +320,5 @@ class Decryption(McmcFile):
         # x >= 1.8 parfait
         # x >= 1.6 && x < 1 discutable
         # x > 1 beaucoup trop null
+
+        #verifier la proposition initiale

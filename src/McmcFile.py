@@ -61,7 +61,7 @@ class McmcFile:
         """
         if(type(data) == str):
             if(len(data.replace(" ",''))> 0):
-                self._data = data
+                self._data = data.lower()
                 return True
             else :
                 message = f"The resource: \"{data}\", must not be empty"
@@ -75,7 +75,7 @@ class McmcFile:
         """
         if(self._path != None):
             with open(f"{self._path}", 'r') as f:
-                self._data = f.read()
+                self.set_data(f.read())
                 #apres utilisation le path est vider
                 self._path = None
                 return True 

@@ -10,7 +10,7 @@ class DecryptionTest(unittest.TestCase):
     def test_run(self):
         decryption = make_decryption()
         sampling = Sampling()
-        sampling.set_path("test/words/francais_30000.txt")
+        sampling.set_path("test/words/swann.txt")
         #test erreur path/data and sampling renseigned
         self.assertRaises(DecryptionException, decryption.run) #error because sampling not renseigned
         # self.assertRaises(DecryptionException, decryption.set_sampling, sampling) #error because sampling not runed // now this error is catch from sampling class

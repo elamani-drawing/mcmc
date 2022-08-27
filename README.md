@@ -1,5 +1,8 @@
 # MCMC-AU
 
+### Description
+Ce projet est inspiré de la vidéo de [`ScienceEtonnante`](https://www.youtube.com/watch?v=z4tkHuWZbRA&t=498s).
+
 ### Installation
 
 1. PIP : `pip install mcmc-au`
