@@ -1,4 +1,3 @@
-from unittest import result
 from .McmcFile import McmcFile
 from .McmcException import SamplingException 
 import json, random

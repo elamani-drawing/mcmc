@@ -1,8 +1,7 @@
-from operator import truediv
 import  sys, os, shutil
 sys.path.append(".")
-from src.Sampling import Sampling
-from src.McmcException import McmcFileException, SamplingException
+from src.MCMC_AU import Sampling
+from src.MCMC_AU import McmcException
 import unittest
 
 class SamplingTest(unittest.TestCase):
@@ -10,7 +9,7 @@ class SamplingTest(unittest.TestCase):
         sampling = make_sampling()
         sampling.set_data(data=get_content())
         
-        self.assertIsInstance(sampling, Sampling)
+        self.assertIsInstance(sampling, Sampling.Sampling)
         self.assertTrue(sampling.has_run()==False)
 
         sampling.run()
@@ -29,19 +28,19 @@ class SamplingTest(unittest.TestCase):
         self.assertEqual(sampling.get_result()["occurence_letter"]["total"], 160) 
         self.assertTrue(sampling.has_run())
 
-        self.assertRaises(McmcFileException, sampling.set_path, "./test/not exist.txt") 
+        self.assertRaises(McmcException.McmcFileException, sampling.set_path, "./test/not exist.txt") 
 
         sampling = None
 
     def test_run_with_path(self):
         sampling = make_sampling()
-        self.assertIsInstance(sampling, Sampling)
+        self.assertIsInstance(sampling, Sampling.Sampling)
         self.assertTrue(sampling.has_run()==False)
         
         #erreur du run parcequ'il n'y a pas de data, pas de path
         self.assertEqual(sampling.get_path(), None) 
         self.assertEqual(sampling.get_data(), None) 
-        self.assertRaises(McmcFileException, sampling.run ) 
+        self.assertRaises(McmcException.McmcFileException, sampling.run ) 
 
         sampling.set_path("test/words/francais_30000.txt")
         self.assertTrue(sampling.has_run() == False)
@@ -78,7 +77,7 @@ class SamplingTest(unittest.TestCase):
     def test_make_words(self):
         sampling = make_sampling()
         sampling.set_path("test/words/francais_30000.txt")
-        self.assertRaises(SamplingException, sampling.make_word) 
+        self.assertRaises(McmcException.SamplingException, sampling.make_word) 
         sampling.run()
         words = sampling.make_word()
         self.assertEqual(len(words), 5)
@@ -139,7 +138,7 @@ def get_content():
         abattage"""
         
 def make_sampling():
-    sampling = Sampling()
+    sampling = Sampling.Sampling()
     return sampling
 
 

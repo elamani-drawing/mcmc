@@ -1,8 +1,7 @@
-from hmac import new
 from .McmcFile import McmcFile
 from .McmcException import DecryptionException 
 from .Sampling import Sampling 
-import os, json, random
+import random
 
 class Decryption(McmcFile):
     """

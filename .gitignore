@@ -3,3 +3,4 @@ main.py
 output/*
 *.json
 *.txt
+.env
