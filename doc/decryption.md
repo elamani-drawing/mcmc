@@ -5,9 +5,12 @@
 3. [Méthodes](#methodes)
 
 ## Description 
-Decryption devrait à l'origine permettre de décrypter des chaines cryptées. Mais cette fonctionnalité ne fonctionne pas encore. ####
-Elle permet également de calculer le niveau de plausibilité d'une phrase. ###
-`Plausibilité d'une phrase`: A quel point les mots d'une phrase semble cohérente par apport a l'object Sampling donnée en entrée. (Permet de savoir si les mots ont un sens ou si c'est des suites de lettres qui n'ont pas de sens) ####
+Decryption devrait à l'origine permettre de décrypter des chaines cryptées. Mais cette fonctionnalité ne fonctionne pas encore.  
+
+Elle permet également de calculer le niveau de plausibilité d'une phrase.  
+
+`Plausibilité d'une phrase`: A quel point les mots d'une phrase semble cohérente par apport a l'object Sampling donnée en entrée. (Permet de savoir si les mots ont un sens ou si c'est des suites de lettres qui n'ont pas de sens)  
+
 Une phrase est : 
 1. parfaitement coherente lorsqu'elle à un score au dessu de 1.8
 2. cohérente lorsqu'elle à un score entre 1.8 et 1.7 
