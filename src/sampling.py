@@ -80,6 +80,8 @@ class Sampling(McmcFile):
         for cle in dictionnaire_percentage:
             dictionnaire[cle] = {}
             total = dictionnaire_percentage[cle]["total"]
+            if(total <1):
+                total = 1
             for cle_2 in dictionnaire_percentage[cle]:
                 if(cle_2 != "total") :
                     dictionnaire[cle][cle_2] = (dictionnaire_percentage[cle][cle_2] * 100) / total
@@ -88,6 +90,8 @@ class Sampling(McmcFile):
         for cle in dictionnaire_occurence_percentage:
             if(cle != "total"):
                 total = dictionnaire_occurence_percentage["total"]
+                if(total <1):
+                    total = 1
                 dictionnaire_occurence[cle] = (dictionnaire_occurence_percentage[cle] * 100)/total
             else:
                 dictionnaire_occurence[cle] = dictionnaire_occurence_percentage["total"]

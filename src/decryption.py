@@ -15,12 +15,10 @@ class Decryption(McmcFile):
         __sampling : Sampling or None 
             Un object Sampling
         __accept_degradation:
-            La limite de accepter en cas de degradation de la plausibilite, utile pour l'algorithme de metropolice
+            La limite accepter en cas de degradation de la plausibilite, utile pour l'algorithme de metropolice
             1>= __accept_degradation >= 0
         __result : dict or None 
             Le resultat de data decrypter apres self.run()
-        __plausible : 
-            La plausibilité de la traduction par apport au enchainement des lettres
         __max_iteration: int
             Le maximum d'iteration que le programme peut faire
         """
@@ -28,7 +26,6 @@ class Decryption(McmcFile):
         self.__sampling = None
         self.__accept_degradation = 0
         self.__result = None 
-        # self.__plausible = None
         self.__max_iteration = 100000
     def set_sampling(self, sampling : Sampling) -> bool: 
         """
@@ -55,7 +52,6 @@ class Decryption(McmcFile):
             degradation: int = 2
                 La valeur de degradation
         """
-        print("deg", degradation)
         if(degradation>1 or degradation<0):
             message = f"Degradation must be between 1 and 0."
             raise DecryptionException(message)
@@ -70,7 +66,6 @@ class Decryption(McmcFile):
             iteration: int
                 La valeur de degradation
         """
-        print("deg", iteration)
         if(iteration<=9999):
             message = f"iteration must be bigger than 9999."
             raise DecryptionException(message)
@@ -155,7 +150,7 @@ class Decryption(McmcFile):
         letter_2_value = proposition.pop(letter_2)
         proposition[letter] = letter_2_value
         proposition[letter_2] = letter_value
-        print("--",letter, letter_2_value, letter_2, letter_value)
+        # print("--",letter, letter_2_value, letter_2, letter_value)
         return proposition
 
     def __plausibiliter(self, phrase:str) -> float:
@@ -245,7 +240,7 @@ class Decryption(McmcFile):
             plausibilite = self.__plausibiliter(traduction)
             #la plausibilite est acceptable 
             if((plausibilite+ self.get_accept_degradation()) >=result["last"]["plausibilite"]):
-                print("----------------------------garde", plausibilite + self.get_accept_degradation(), result["last"]["plausibilite"] )
+                # print("----------------------------garde", plausibilite + self.get_accept_degradation(), result["last"]["plausibilite"] )
                 #on met à jour la derniere proposition 
                 result["last"]["proposition"] = proposition
                 result["last"]["traduction"] = traduction 
@@ -258,7 +253,7 @@ class Decryption(McmcFile):
                     result["max_plausible"]["plausibilite"] = plausibilite 
             #la plausibilite est inutilisable > 1.6
             else:
-                print("---garde pas", plausibilite, "--", result["last"]["plausibilite"], traduction)
+                # print("---garde pas", plausibilite, "--", result["last"]["plausibilite"], traduction)
                 #on revient on arriere et on essaye une autre proposition 
                 proposition = result["last"]["proposition"]
                 traduction = result["last"]["traduction"]
@@ -268,12 +263,21 @@ class Decryption(McmcFile):
         
         return result 
 
+    def take_plausibilite(self, phrase : str) -> float:
+        """
+            Calcul le niveau de plausibiliter d'une phrase
+            Parameters
+            ----------
+            phrase : str
+                La phrase dont il faut calculer le niveau de plausibiliter
+        """
+        return self.__plausibiliter(phrase=phrase.lower())
+
     def run(self):
         """
             Lance le processus de déchiffrement
         """
-        print("cette fonctionnalité n'est pas encore disponnible :(")
-        return 
+        
         if(self.__sampling == None):
             message = f"The resource: 'self.__sampling' must be renseigned"
             raise DecryptionException(message)
@@ -286,26 +290,11 @@ class Decryption(McmcFile):
             sampling_data_crypted.set_path(self.get_path())
         else:
             sampling_data_crypted.set_data(self.get_data())
+        print("cette fonctionnalité n'est pas encore disponnible :(")
+        return
         sampling_data_crypted.run()
         # sampling_data_crypted.display(True)
         # print(sampling_data_crypted.get_data())
         sampling_data_crypted.sorted()
         print(self.__search(sampling_data_crypted))
         
-        #verifier le chargement des datas, les majuscules doivent etre des minuscule, garder les espaces etc.
-
-        # print(self.__plausibiliter(phrase="aujourd'hui je suis allez me promener aux bord de la riviere, j'y est croiser mon frere qui y pechait des poissons-chat."))
-        # print(self.__plausibiliter(phrase="sfdjk refd rfdzfsd qeqqsqdfsedz jlmfdv dfuhijodsf sdbuh i dsq vsqy caca qbdhds bds deshjk dsujkd zdesijref rsodsh gybhdsub dvsbhsdb dsbchisd dshbcxxx"))
-        
-        # print(self.__plausibiliter(phrase="marine"))
-        # print(self.__plausibiliter(phrase="zemour"))
-        # print(self.__plausibiliter(phrase="Le héros de la chanson de geste tient ses traits du héros épique. Il est vaillant, brave, il sait manier les armes, il allie la franchise à la loyauté et à la générosité. Par-dessus tout, il sait préserver son honneur. Parmi les nombreux motifs hérités de la chanson de geste, notons celui de la description des armes du chevalier, de ses acolytes ou de ses ennemis, celui des combats et des batailles qui s'ensuivent ou bien encore ceux des embuscades, poursuites et autres pièges qui jalonnent le chemin du héros. On trouve également les scènes d'ambassade chères à la chanson de geste, les scènes de conseil entre un seigneur et ses barons ou encore le regret funèbre (lamentations sur un héros, un compagnon perdu) et la prière du plus grand péril. Cependant, le roman s'éloigne sur plusieurs points de la chanson de geste"))
-        # print(self.__plausibiliter(phrase="La rupture littéraire amorcée par l'apparition du nouveau genre de la poésie lyrique ne doit pas pour autant masquer une large continuité dans les thèmes et les motifs évoqués par le roman. Il hérite en premier lieu des personnages stylisés de la poésie lyrique : la dame y est une femme mariée de condition supérieure à celle de son prétendant ; l'homme vassal est obéissant à la dame, il est timide et emprunté devant elle et le losengiers est un personnage fourbe, un traître en puissance. Il reprend également le thème de la fine amor, cet amour secret, sacré dans lequel la femme est divinisée, sacralisée. Il hérite aussi de la Reverdie. La Reverdie est un retour cyclique au printemps qui entraîne la contemplation de la dame par l'amant ainsi que son portrait élogieux fait d'association entre la beauté de la nature et celle de la femme. La sonorité est également une partie intégrante de la poésie lyrique, car la poésie ne peut se faire sans rimes et le lyrisme ne peut se séparer des sonorités, du rythme."))
-        
-        # print(self.__plausibiliter(phrase="Lg pg lqwg rcu eqpvtg wpg gswkrg gp rctvkewnkgt. Lg lqwg rqwt og dcvvtg eqpvtg n'kfgg fg rgtftg. Lg pg lqwg rcu eqpvtg wpg gswkrg gp rctvkewnkgt. Lg lqwg rqwt og dcvvtg eqpvtg n'kfgg fg rgtftg."))
-
-        # x >= 1.8 parfait
-        # x >= 1.6 && x < 1 discutable
-        # x > 1 beaucoup trop null
-
-        #verifier la proposition initiale
