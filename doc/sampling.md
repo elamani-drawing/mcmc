@@ -1,4 +1,8 @@
 # Sampling 
+## Table des matiéres
+1. [Description](#description)
+2. [Exemples](#exemples)
+3. [Méthodes](#methodes)
 
 ## Description 
 Sampling prend une chaine de caractère en entrée (ou un fichier.txt) et recueille des renseignements dessu. 
@@ -29,7 +33,8 @@ sampling.display(True) #indique que vous voulez également afficher le resultat,
 ### Lancer le processus pour recueillir les données
 ATTENTION apres sampling.run() le programme verifie si un chemin est renseigner (à l'aide de set_path), si c'est le cas, le programme charge le contenu du fichier dans self.__data, et l'attribut self.__path est remis à None.
 ```py
-sampling.run()  
+sampling.run()
+resultat = sampling.get_result()  
 ```
 Apres le run, vous pouvez soit generer des mots soit exporter les données.
 ### Generer des mots
@@ -47,7 +52,7 @@ sampling.to_json(export=True, name="sampling.json") #convertit les données en j
 sampling.to_txt() #convertit les données en json et les renvoies
 sampling.to_txt(export=True, name="sampling.txt") #convertit les données en json et les exportes dans un fichier txt
 ```
-### Convertir les valeurs données en pourcentage
+### Convertir les données en pourcentage
 ```py
 print(sampling.to_percentage()) #Copie le dictionnaire de résultat en convertsissant les valeurs en pourcentage et retourne le nouveau dictionnaire
 sampling.to_percentage(export=True, name="sampling_percentage.txt") #Copie le dictionnaire de résultat en convertsissant les valeurs en pourcentage et les exportes dans un fichier .txt
