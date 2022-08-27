@@ -67,4 +67,4 @@ sampling.sorted() #Range les valeurs de 'occurence_letter' dans l'ordre décrois
 ```
 
 ## Methodes
-Je vous laisse le soin d'utiliser votre éditeur pour avoir plus de détails sur la signature, les arguments de chacunes des methodes etc. ou de lire [Sampling.py](https://github.com/elamani-drawing/mcmc-au/blob/main/src/MCMC_AU/Sampling.py)
+Je vous laisse le soin d'utiliser votre éditeur pour avoir plus de détails sur la signature, les arguments de chacunes des methodes etc. ou de lire [Sampling.py](/src/MCMC_AU/Sampling.py)
