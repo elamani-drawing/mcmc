@@ -8,7 +8,7 @@ Ce projet est inspiré de la vidéo de [`ScienceEtonnante`](https://www.youtube.
 
 ### Installation
 
-1. PIP : `pip install mcmc-au`
+1. PIP : `pip install MCMC-AU`
 2. Git : `git clone https://github.com/elamani-drawing/mcmc-au/`
 
 ### Execution des tests 

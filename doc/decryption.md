@@ -17,7 +17,8 @@ Une phrase est :
 ## Exemples 
 ### Créer un object Decryption
 ```python
-decryption = Decryption()
+from MCMC_AU import Decryption
+decryption = Decryption.Decryption()
 ```
 Vous aurez besoin d'un obect [Sampling](sampling.md)
 ### Lui passer les données en entrée

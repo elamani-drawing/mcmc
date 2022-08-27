@@ -2,6 +2,9 @@ import  sys, os, shutil
 sys.path.append(".")
 from src.MCMC_AU import Sampling
 from src.MCMC_AU import McmcException
+#si vous avez installer MCMC_AU vous pouvez utiliser ses imports
+# from MCMC_AU import Sampling
+# from MCMC_AU import McmcException
 import unittest
 
 class SamplingTest(unittest.TestCase):
@@ -89,7 +92,7 @@ class SamplingTest(unittest.TestCase):
 
     def test_generate_file(self):
         
-        return #le test est desactiver 
+        # return #le test est desactiver 
         sampling = make_sampling()
         sampling.set_path("test/words/swann.txt")
         sampling.run()

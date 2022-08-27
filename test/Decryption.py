@@ -1,10 +1,16 @@
 import unittest
 import sys
+import MCMC_AU
 sys.path.append(".")
 
 from src.MCMC_AU import Sampling
 from src.MCMC_AU import McmcException
 from src.MCMC_AU import Decryption
+
+#si vous avez installer MCMC_AU vous pouvez utiliser ses imports
+# from MCMC_AU import Sampling
+# from MCMC_AU import McmcException
+# from MCMC_AU import Decryption
 
 class DecryptionTest(unittest.TestCase):
     def test_run(self):

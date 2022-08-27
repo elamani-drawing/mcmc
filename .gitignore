@@ -4,3 +4,4 @@ output/*
 *.json
 *.txt
 .env
+dist/

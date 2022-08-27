@@ -15,7 +15,8 @@ Après avoir recueilli les informations nécessaires, Sampling permet d'exporter
 ## Exemples 
 ### Créer un object Sampling
 ```python
-sampling = Sampling()
+from MCMC_AU import Sampling
+sampling = Sampling.Sampling()
 ```
 ### Lui passer les données en entrée
 ```py
